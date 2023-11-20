@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo teste p2</title>
+    <script src="scriptSPRITE.js"></script>
+</head>
+<body>
+    
+    <audio src="audiominish.mp3" autoplay controls loop></audio>
+    <canvas id="mapa" width="600" height="400"></canvas>
+    <canvas id="canva" width="600" height="400"></canvas>
+    <div  class="efeito">
+        <h5 id="pontuacao">Pontuação: 0</h5>
+    </div>
+    
+    
+    <style>
+        body{
+            background-color: #072040;
+        }
+        .efeito{
+            width: 100px;
+            padding: 10px;
+            background-color: grey;
+            border-radius: 10px;
+            text-align: center;
+            top: 30%;
+            bottom: 58%;
+            left: 250px;
+            position: absolute;
+        }
+
+        .efeito h5{
+            color: yellow;
+        }
+
+        canvas{
+            border: solid 1px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+
+
+    <script>
+        
+
+        let canva = document.getElementById("canva")
+        let ctx = canva.getContext("2d")
+        let canva2 = document.getElementById("mapa")
+        let ctx2 = canva2.getContext("2d")
+
+        let num = 0;
+        let posI = 0;
+        let largura = 0;
+        let numspries = 2;
+        let posX = 525;
+        let posY = 100;
+        let velo = 2;
+
+        let pontuacao = 0;
+        const pontuacaodisplay = document.getElementById("pontuacao");
+
+        let chaveX = 100;
+        let chaveY = 100;
+        let chaveW = 15;
+        let chaveH = 15;
+
+        let chaveX2 = 300;
+        let chaveY2 = 300;
+        let chaveW2 = 15;
+        let chaveH2 = 15;
+
+
+        //personagem, sprite
+        let perso = new Image();
+        perso.src = "Run.png";
+        //chave 1
+        let chave = new Image();
+        chave.src= "chaveeu.png";
+        //chave 2
+        let chave2 = new Image();
+        chave2.src= "chaveeu.png";
+        //mapa
+        let mapa = new Image();
+        mapa.src="Finalmente o Mapa.png";
+
+        mapa.addEventListener("load", ()=>{
+            ctx2.drawImage(mapa,0,0,600,400)
+        })
+
+        
+        perso.addEventListener("load", ()=>{
+            largura = perso.width/numspries;
+            alt = perso.height/numspries
+            posI = largura*num;
+            ctx.drawImage(perso,posI,0,largura,alt,posX,posY,largura,alt)
+        })
+          
+        
+        //animação dele se mexer
+        let anima = setInterval(()=>{
+            ctx.clearRect(0,0,600,600)
+            num++
+            if(num>1)
+            num=0
+            posI = largura*num
+            ctx.drawImage(perso,posI,0,largura,alt,posX,posY,largura,alt)
+        },300)
+        
+        
+        //animação das chaves
+        let animacha = setInterval(()=>{
+            ctx.clearRect(100,100,0,0)
+            ctx.drawImage(chave,chaveX,chaveY,chaveH,chaveW)
+        },1)
+
+        let animacha2 = setInterval(()=>{
+            ctx.clearRect(100,100,0,0)
+            ctx.drawImage(chave2,chaveX2,chaveY2,chaveH2,chaveW2)
+        },1)
+        
+
+        //desenha o sprite do personagem quando se move
+        const desenha = ()=>{
+            ctx.clearRect(0,0,600,600)
+            ctx.drawImage(perso,posI,0,largura,alt,posX,posY,largura,alt)
+        }
+        
+        
+        window.addEventListener("keydown", (event)=>{ //Movimentação do personagem
+            if(event.keyCode == 37){ // se movimenta para a esquerda
+                posX -=velo;
+            }else if(event.keyCode == 39){ //se movimenta para a direita
+                posX +=velo;
+            }else if(event.keyCode == 38){  //se movimenta para cima
+                posY -=velo;
+            }else if(event.keyCode == 40){ // se movimenta para baixo
+                posY +=velo;
+            }
+            desenha();
+        })
+
+        let pont = document.getElementById("placar")
+
+        //colisão com a 1 chave
+       function colisa(perso,chave){
+        if(
+            posX + largura >= chaveX &&
+            posX <= chaveX + chaveW &&
+            posY + alt >= chaveY &&
+            posY <= chaveY + chaveH
+        ){
+            atualizarPont();
+        }
+       } 
+    
+       //verifica se pode haver colisão de tempos em tempos
+       setInterval(colisa, 1900);
+       setInterval(colisa2,1900)
+
+       function atualizarPont(){
+        pontuacao++;
+        pontuacaodisplay.textContent = "Pontuação: " + pontuacao;
+       }
+
+
+       function colisa2(perso,chave2){
+        if(
+            posX + largura >= chaveX2 &&
+            posX <= chaveX2 + chaveW2 &&
+            posY + alt >= chaveY2 &&
+            posY <= chaveY2 + chaveH2
+        ){
+            atualizarPont();
+        }
+       } 
+
+
+    </script>
+</body>
+</html>
