@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo teste p2</title>
+    <title>Jogo</title>
     <script src="scriptSPRITE.js"></script>
 </head>
 <body>
-    
+
     <audio src="audiominish.mp3" autoplay controls loop></audio>
     <canvas id="mapa" width="600" height="400"></canvas>
     <canvas id="canva" width="600" height="400"></canvas>
@@ -48,12 +48,13 @@
 
     <script>
         
-
+        //carregamento dos dois canvas
         let canva = document.getElementById("canva")
         let ctx = canva.getContext("2d")
         let canva2 = document.getElementById("mapa")
         let ctx2 = canva2.getContext("2d")
 
+        //variaveis
         let num = 0;
         let posI = 0;
         let largura = 0;
@@ -89,11 +90,12 @@
         let mapa = new Image();
         mapa.src="Finalmente o Mapa.png";
 
+        //carregamento do mapa
         mapa.addEventListener("load", ()=>{
             ctx2.drawImage(mapa,0,0,600,400)
         })
 
-        
+        //personagem desenhado
         perso.addEventListener("load", ()=>{
             largura = perso.width/numspries;
             alt = perso.height/numspries
@@ -131,8 +133,8 @@
             ctx.drawImage(perso,posI,0,largura,alt,posX,posY,largura,alt)
         }
         
-        
-        window.addEventListener("keydown", (event)=>{ //Movimentação do personagem
+        //Movimentação do personagem
+        window.addEventListener("keydown", (event)=>{ 
             if(event.keyCode == 37){ // se movimenta para a esquerda
                 posX -=velo;
             }else if(event.keyCode == 39){ //se movimenta para a direita
@@ -163,12 +165,13 @@
        setInterval(colisa, 1900);
        setInterval(colisa2,1900)
 
+        //atualizar a pontuação
        function atualizarPont(){
         pontuacao++;
         pontuacaodisplay.textContent = "Pontuação: " + pontuacao;
        }
 
-
+        //colisão com a 2 chave
        function colisa2(perso,chave2){
         if(
             posX + largura >= chaveX2 &&
